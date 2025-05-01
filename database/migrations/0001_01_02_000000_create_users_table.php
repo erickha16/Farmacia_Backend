@@ -9,17 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    // En tu migración, especifica qué migraciones deben ejecutarse antes:
-    public function __construct()
-    {
-        $this->after = ['2025_04_29_182912_create_rols_table', '2025_04_29_183250_create_sucursals_table'];
-    }
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('lastname')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

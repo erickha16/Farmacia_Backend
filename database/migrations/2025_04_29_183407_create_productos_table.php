@@ -17,7 +17,6 @@ return new class extends Migration
             $table->double('price', 8, 2);
             $table->string('barcode')->unique();
             $table->foreignId('id_categoria')->constrained('categorias')->onDelete('restrict');
-            $table->timestamps();
         });
     }
 
