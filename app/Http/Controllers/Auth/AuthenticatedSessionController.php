@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,13 +14,22 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $user = $request->user();
+        // Elimina cualquier token existente del usuario
+        $user->tokens()->delete();
+        
+        // Crea un nuevo token
+        $token = $user->createToken('auth-token')->plainTextToken;
 
-        return response()->noContent();
+        return response()->json([
+            'token' => $token,
+            'user' => $user,
+            'message' => 'Login successful'
+        ]);
     }
 
     /**
@@ -29,10 +39,8 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+        $request->user()->tokens()->delete();
+    
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }

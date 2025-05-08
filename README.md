@@ -16,6 +16,7 @@
 - [Instalación y Configuración](#instalación-y-configuración)
   - [Requisitos Previos](#requisitos-previos)
   - [Pasos para configurar el Proyecto](#pasos-para-configurar-el-proyecto)
+- [API Endpoints](#api-endpoints)
 - [Créditos y contacto](#créditos-y-contacto)
 
 
@@ -34,7 +35,6 @@ Este proyecto utiliza **Laravel 12 como framework para crear el Backend**. Para 
 - Node.js (si usas herramientas como Vite, TailwindCSS, o compilación de assets).
 - Git (para clonar el repositorio).
 
-## NOTA: EL PROYECTO ESTÁ AÚN EN DESARROLLO, NO SEGUIR LOS SIGUIENTES PASOS POR EL MOMENTO.
 ### Pasos para configurar el Proyecto
 
 1. **Clonar el Repositorio**
@@ -64,7 +64,7 @@ Este proyecto utiliza **Laravel 12 como framework para crear el Backend**. Para 
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=nombre_de_tu_base_de_datos
+    DB_DATABASE=nombre_de_tu_base_de_datos #En mi caso es: farmacia
     DB_USERNAME=root  # Usuario por defecto de XAMPP
     DB_PASSWORD=      # Contraseña de XAMPP (normalmente vacía)
     ```
@@ -122,11 +122,72 @@ Este proyecto utiliza **Laravel 12 como framework para crear el Backend**. Para 
 ```bash
 chmod -R 775 storage bootstrap/cache
 ```
+## NOTA: EL PROYECTO ESTÁ AÚN EN DESARROLLO. POR LO QUE AÚN NO FUNCIONA COMO DEBERÍA.
 
-## Créditos y contacto 
+## API Endpoints
+
+Para probar los endpoints de la API se utilizó la extensión de VisualStudio Code llamada Thunderclient, la cual es similar a Postman.
+
+### Login (POST)
+
+Ruta: http://127.0.0.1:8000/api/login
+
+Headers:
+
+```bash
+Authorization: Bearer tu-token-aqui
+Accept: application/json
+```
+
+Body:
+
+```json
+{
+  "email": "user01@example.com",
+  "password": "user0001"
+}
+```
+
+EL token generado es muy improtante para poder realizar otras peticiones, por lo que es importante almacenarlo y saber como ocuparlo desde el front para consumir la API.
+Ejemplo de como almacenar el token con JavaScript:
+
+```javascript
+const handleLogin = async () => {
+  const response = await fetch('http://tu-api.local/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password })
+  });
+  
+  const data = await response.json();
+  
+  // Guardar el token en localStorage
+  localStorage.setItem('authToken', data.token);
+  
+  // También puedes guardarlo en el estado de tu aplicación
+  setUser(data.user);
+};
+```
+
+### User (GET)
+
+Ruta: http://127.0.0.1:8000/api/user
+
+Headers:
+
+```bash
+Authorization: Bearer tu-token-aqui
+Accept: application/json
+Authorization: Bearer tuToken
+```
+
+## Créditos y contacto
 
 Proyecto desarrollado por: Erick Adrián Hernández Aburto
  ¿Interesado en colaborar o reportar un bug? Contáctame en:  
+
 - [LindekIn](https://www.linkedin.com/in/erickha16/)
 - [Github](https://github.com/erickha16)
-- Email: **errickha@gmail.com** (para consultas formales). 
+- Email: **errickha@gmail.com** (para consultas formales).
